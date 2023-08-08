@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import requests from "../api/requests";
 import axios from "axios";
 import styled from "styled-components";
+import './Banner.css'
 
 // ! 웹 페이지 배너 구현
 // : 배너에 표시되는 영화 정보를 불러오는 기능 담당
@@ -21,7 +22,7 @@ type MovieDetail = {
   };
 };
 
-export default function Banner() {
+const Banner: React.FC = () => {
   const [movie, setMovie] = useState<MovieDetail | null>(null);
   const [isClicked, setIsClicked] = useState<boolean>(false);
 
@@ -86,18 +87,20 @@ export default function Banner() {
     );
   } else {
     // 컴포넌트가 클릭되었을 때 (isClicked가 true일 때) 동영상을 보여줌
-    <Container>
-      <HomeContainer>
-        <Iframe
-          src={`https://www.youtube.com/embed/${movie?.videos.results[0].key}?controls=0&autoplay=1&loop=1&mute=1&playlist=${movie?.videos.results[0].key}`}
-          title="YouTube video player"
-          allow="autoplay; fullscreen"
-          allowFullScreen
-        ></Iframe>
-      </HomeContainer>
-    </Container>;
+    return (
+      <Container>
+        <HomeContainer>
+          <Iframe
+            src={`https://www.youtube.com/embed/${movie?.videos.results[0].key}?controls=0&autoplay=1&loop=1&mute=1&playlist=${movie?.videos.results[0].key}`}
+            title="YouTube video player"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+          ></Iframe>
+        </HomeContainer>
+      </Container>
+    );
   }
-}
+};
 
 const Iframe = styled.iframe`
   width: 100%;
@@ -117,6 +120,8 @@ const Container = styled.div`
 `;
 
 const HomeContainer = styled.div`
-width: 100%
-height: 100%;
+  width: 100%;
+  height: 100%;
 `;
+
+export default Banner;

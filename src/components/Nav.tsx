@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './Nav.css'
 
 // ? 스크롤 위치에 따라 변하는 로직
 // ? 검색 입력창

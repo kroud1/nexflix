@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 import axios from "axios";
+import './SearchPage.css'
 
 // 영화 데이터의 인터페이스 정의
 interface Movie {
@@ -52,7 +53,49 @@ const SearchPage = () => {
     }
   };
 
-  return <div>index</div>;
+  // 검색 결과를 랜더링하는 함수
+  const renderSearchResult = () => {
+    // searchResults 배열의 길이가 0보다 크면 (검색 결과가 있으면) 조건문 내부의 로직을 실행
+    return searchResults.length > 0 ? (
+      <section className="search-container">
+        {/* searchResults 배열을 순회하면서 각 movie 요소에 대해 로직을 실행 */}
+        {searchResults.map((movie: Movie) => {
+          // 만약 movie의 backdrop_path가 null이 아니고, media_type이 "person"이 아니라면
+          if (movie.backdrop_path !== null && movie.media_type !== "person") {
+            // movieImageUrl은 영화 이미지 URL을 나타냄.
+            const movieImageUrl =
+              "https://image.tmdb.org/t/p/w500" + movie.backdrop_path;
+            return (
+              <div className="movie" key={movie.id}>
+                {/* 아래 div를 클릭하면, 해당 movie의 id를 기반으로 새로운 경로로 이동 */}
+                <div
+                  onClick={() => navigate(`/${movie.id}`)}
+                  className="movie__column-poster"
+                >
+                  {/* 위에서 생성한 movieImageUrl을 사용하여 영화 이미지를 표시 */}
+                  <img
+                    src={movieImageUrl}
+                    alt="movie"
+                    className="movie__poster"
+                  />
+                </div>
+              </div>
+            );
+          }
+        })}
+      </section>
+    ) : (
+      <section className="no-results">
+        <div className="no-results__text">
+          <p>
+            찾고자하는 검색어 "{debouncedSearchTerm}"에 맞는 영화가 없습니다.
+          </p>
+        </div>
+      </section>
+    );
+  };
+
+  return renderSearchResult();
 };
 
 export default SearchPage;
